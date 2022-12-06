@@ -28,7 +28,6 @@ pipeline {
                 stash name: "stash-artifact", includes: "construyeya.tar"
                 archiveArtifacts 'construyeya.tar'
                 sh "echo Imagen creada compresa"
-                sh "docker rm dev_proyecto_final_vue -f || true"
                 sh "docker run -p 8081:80 -d --name dev_proyecto_final_vue proyecto_final_vue/final:v1"
             }
         }
@@ -38,7 +37,6 @@ pipeline {
                 sh "echo Desplegando Entorno QA"
                 unstash "stash-artifact"
                 sh "docker load -i construyeya.tar"                              
-                sh "docker rm qa_proyecto_final_vue -f || true"
                 sh "docker run -p 8081:80 -d --name qa_proyecto_final_vue proyecto_final_vue/final:v1"
                 sh "echo QA publicado"
                 
@@ -57,7 +55,6 @@ pipeline {
             agent { label PROD_NODE}
             steps {
                 sh "echo Despliegue en PROD"          
-                sh "docker rm prod_proyecto_final_vue -f || true"
                 sh "docker run -p 8082:80 -d --name prod_proyecto_final_vue proyecto_final_vue/final:v1"
             }
 
