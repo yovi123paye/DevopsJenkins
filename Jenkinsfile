@@ -28,6 +28,7 @@ pipeline {
                 stash name: "stash-artifact", includes: "construyeya.tar"
                 archiveArtifacts 'construyeya.tar'
                 sh "echo Imagen creada compresa"
+                sh "docker rm dev_proyecto_final_vue -f || true"
                 sh "docker run -p 8081:80 -d --name dev_proyecto_final_vue proyecto_final_vue/final:v1"
             }
         }
